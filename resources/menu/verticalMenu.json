@@ -1,0 +1,39 @@
+{
+  "menu": [
+    {
+        "url": "/",
+        "name": "Dashboards",
+        "icon": "menu-icon tf-icons bx bx-home-smile",
+        "slug": "dashboard"
+    },
+    {
+        "url": "/",
+        "name": "Deposits",
+        "icon": "menu-icon tf-icons bx bx-money",
+        "slug": "dashboard"
+    },
+    {
+        "url": "/",
+        "name": "Widhdrawals Req",
+        "icon": "menu-icon tf-icons bx bx-money",
+        "slug": "dashboard"
+    },
+    {
+        "name": "Users",
+        "icon": "menu-icon tf-icons bx bx-user",
+        "slug": "layouts",
+        "submenu": [
+          {
+            "url": "user/registration",
+            "name": "User Registration",
+            "slug": "layouts-without-menu"
+          },
+          {
+            "url": "layouts/without-navbar",
+            "name": "User List",
+            "slug": "layouts-without-navbar"
+          }
+        ]
+    }
+]
+}

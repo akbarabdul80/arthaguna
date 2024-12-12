@@ -15,9 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->enum('role', ['admin','user'])->default('user');
+            $table->string('no_telp');
+            $table->string('nama_bank');
+            $table->string('nama_pemilik');
+            $table->string('no_rekening');
+            $table->string('ktp_image');
+            $table->date('tanggal_lahir');
+            $table->boolean('is_verified')->default(false);
+            $table->decimal('total_saldo', 12, 2)->default(0);
             $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
         });
 
