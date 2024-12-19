@@ -10,7 +10,7 @@ class Deposit extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'deposit';
+    protected $table = 'deposits';
 
     protected $fillable = [
         'user_id',

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('withdraw_no_rekening');
             $table->enum('status', ['pending','approved','rejected'])->default('pending');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

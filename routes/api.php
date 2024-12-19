@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\SaldoController;
+use App\Http\Controllers\PaymentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,10 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('saldo', [SaldoController::class, 'getSaldo']);
     Route::post('withdraw', [SaldoController::class, 'withdraw']);
+
 });
+
+Route::post('charge', [PaymentController::class, 'charge']);
 
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);

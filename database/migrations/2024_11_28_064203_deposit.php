@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('midtrans_transaction_id');
             $table->enum('status', ['pending','approved','rejected'])->default('pending');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

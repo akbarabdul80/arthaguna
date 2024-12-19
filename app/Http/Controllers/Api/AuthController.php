@@ -45,11 +45,16 @@ class AuthController extends Controller
     {
         $validated = $request->validated();
 
-        if (!Auth::attempt($validated)) {
-            return BaseResponse::errorForbidden("Silahkan cek kembali email dan password anda");
+        if (!Auth::attempt(
+            [
+                'no_telp' => $validated['phone'],
+                'password' => $validated['password']
+            ]
+        )) {
+            return BaseResponse::errorForbidden("Silahkan cek kembali no telfon dan password anda");
         }
 
-        $user = User::where('email', $request->email)->firstOrFail();
+        $user = User::where('no_telp', $request->phone)->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
