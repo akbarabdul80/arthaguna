@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\WithdrawRequest;
 use App\Http\Responses\BaseResponse;
+use App\Models\TmpMidtrans;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Midtrans\Config;
@@ -69,10 +70,15 @@ class PaymentController extends Controller
         $grossAmount = $transactionDetails['gross_amount'] ?? null;
         $orderId = $transactionDetails['order_id'] ?? null;
 
+        $invoice_number = 'DP-' . time() . '-' . $customerIdentifier;
 
-
-
-
+        // Save transaction to database
+        $tmp_midtrans = new TmpMidtrans();
+        $tmp_midtrans->invoice_number = $invoice_number;
+        $tmp_midtrans->user_id = $userId;
+        $tmp_midtrans->amount = $grossAmount;
+        $tmp_midtrans->midtrans_transaction_id = $orderId;
+        $tmp_midtrans->save();
 
         // Return response from Midtrans
         return response($response->json(), $response->status());

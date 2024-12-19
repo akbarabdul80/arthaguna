@@ -13,6 +13,7 @@ class Withdraw extends Model
     protected $table = 'withdraws';
 
     protected $fillable = [
+        'invoice_number',
         'user_id',
         'amount',
         'withdraw_nama_bank',

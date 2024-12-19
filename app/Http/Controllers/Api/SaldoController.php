@@ -63,15 +63,14 @@ class SaldoController extends Controller
     {
         $user = $request->user();
 
-        // if ($user->is_verified == 0) {
-        //     return BaseResponse::error('User belum terverifikasi', 400);
-        // }
-
         if ($user->total_saldo < $request->amount) {
             return BaseResponse::error('Saldo tidak cukup', 400);
         }
 
+        $invoice_number = 'WD-' . time() . '-' . $user->id;
+
         $user->withdraws()->create([
+            'invoice_number' => $invoice_number,
             'amount' => $request->amount,
             'withdraw_nama_bank' => $user->nama_bank,
             'withdraw_nama_pemilik' => $user->nama_pemilik,

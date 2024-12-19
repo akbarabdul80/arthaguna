@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('deposits', function (Blueprint $table) {
+        Schema::create('tmp_midtrans', function (Blueprint $table) {
             $table->id();
             $table->string('invoice_number')->unique();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('amount', 12, 2);
             $table->string('midtrans_transaction_id');
-            $table->enum('status', ['pending','approved','rejected'])->default('pending');
             $table->timestamps();
             $table->softDeletes();
         });
