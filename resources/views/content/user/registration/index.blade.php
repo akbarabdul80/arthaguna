@@ -110,7 +110,6 @@
                                     </div>
                                 </td>
                             @elseif($item->is_verified == '2')
-
                                 <td>
                                     <button type="button" class="btn btn-sm btn-danger dropdown-toggle"
                                         data-bs-toggle="modal" aria-expanded="false"
@@ -181,7 +180,6 @@
                                         </div>
                                     </div>
                                 </td>
-
                             @endif
 
                         </tr>
