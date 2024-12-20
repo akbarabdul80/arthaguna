@@ -29,7 +29,7 @@
             "slug": "layouts-without-menu"
           },
           {
-            "url": "layouts/without-navbar",
+            "url": "user/list",
             "name": "User List",
             "slug": "layouts-without-navbar"
           }

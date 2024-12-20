@@ -16,7 +16,7 @@ class DummyWithDrawSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 1; $i++) {
             Withdraw::create([
                 'invoice_number' => 'INV-' . strtoupper(Str::random(10)), // Random invoice number
                 'user_id' => $faker->numberBetween(2, 4), // Assuming users with ID between 1 and 10

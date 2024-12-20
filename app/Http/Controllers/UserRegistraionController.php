@@ -12,54 +12,29 @@ class UserRegistraionController extends Controller
      */
     public function index()
     {
-        return view('content.user.registration.index');
+        $users = User::where('role', 'user')
+        ->whereIn('is_verified', [0, 2])
+        ->orderBy('is_verified', 'asc')
+        ->get();
+
+        return view('content.user.registration.index', ['users' => $users]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function update(Request $request, $id)
     {
-        //
-    }
+        // Validasi input
+        $validatedData = $request->validate([
+            'is_verified' => 'required|in:0,1,2',
+        ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // Cari data withdrawal berdasarkan ID
+        $user = User::findOrFail($id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
+        // Update status
+        $user->is_verified = $validatedData['is_verified'];
+        $user->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, User $user)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(User $user)
-    {
-        //
+        // Redirect dengan pesan sukses
+        return redirect()->route('user.reg')->with('success', 'User Registration status updated successfully.');
     }
 }

@@ -11,7 +11,7 @@
             </button>
         </div>
     @endif
-    <div class="card">
+    <div class="card" >
         <h5 class="card-header">Daftar Riwayat Withdrawal</h5>
         <div class="table-responsive text-nowrap">
             <table class="table">
