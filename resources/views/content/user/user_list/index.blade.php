@@ -36,7 +36,7 @@
                             <td>{{ $item->no_rekening }}</td>
                             <td>{{ $item->nama_bank }}</td>
                             <td><img src="{{ asset('storage/ktp_img/' . $item->ktp_image) }}" class="img-fluid"
-                                    alt="..."></td>
+                                    alt="..." style="max-width: 100px"></td>
                             <td>{{ 'Rp ' . number_format($item->total_saldo, 0, ',', '.') }}</td>
                             <td><span class="btn btn-sm btn-success me-1">Approved</span></td>
                         </tr>
