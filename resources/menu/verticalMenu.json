@@ -10,13 +10,13 @@
         "url": "/deposit",
         "name": "Deposits",
         "icon": "menu-icon tf-icons bx bx-money",
-        "slug": "dashboard"
+        "slug": "deposit"
     },
     {
         "url": "/withdrawals",
         "name": "Withdrawals Req",
         "icon": "menu-icon tf-icons bx bx-money",
-        "slug": "dashboard"
+        "slug": "withdrawal"
     },
     {
         "name": "Users",

@@ -33,7 +33,7 @@
       $currentRouteName = Route::currentRouteName();
 
       if ($currentRouteName === $menu->slug) {
-        // $activeClass = 'active';
+        $activeClass = 'active';
       }
       elseif (isset($menu->submenu)) {
         if (gettype($menu->slug) === 'array') {
