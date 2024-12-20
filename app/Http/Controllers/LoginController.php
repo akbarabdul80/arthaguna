@@ -13,14 +13,13 @@ class LoginController extends Controller
 {
     use ValidatesRequests;
 
-    public function showDashboard(){
-
+    public function showDashboard()
+    {
         $users = User::where('role', 'user')->get()->count();
         $total_deposit = Deposit::where('status', 'approved')->sum('amount');
         $total_withdraw = Withdraw::where('status', 'approved')->sum('amount');
 
-
-        return view('content.dashboard.dashboards-analytics',['users'=>$users, 'total_deposit'=>$total_deposit, 'total_withdraw'=>$total_withdraw]);
+        return view('content.dashboard.dashboards-analytics', ['users' => $users, 'total_deposit' => $total_deposit, 'total_withdraw' => $total_withdraw]);
     }
 
     public function showLoginForm()
@@ -31,19 +30,28 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         // Validasi input
-        $validated = $request->validate( [
+        $validated = $request->validate([
             'email' => 'required|email',
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         // Attempt to log the user in
         if (Auth::attempt($request->only('email', 'password'))) {
             // Authentication passed...
+            $user = Auth::user(); // Mendapatkan user yang terautentikasi
+
+            // Periksa apakah user memiliki role admin
+            if ($user->role !== 'admin') {
+                Auth::logout(); // Logout user jika bukan admin
+                return back()->with('error', 'Login hanya untuk admin.');
+            }
+
+            // Jika role admin, arahkan ke dashboard atau halaman utama
             return redirect()->intended('/');
         }
 
-             // Authentication failed...
-            return back()->with('error', 'Login gagal! Periksa email dan password Anda.');
+        // Authentication failed...
+        return back()->with('error', 'Login gagal! Periksa email dan password Anda.');
     }
 
     public function logout()
