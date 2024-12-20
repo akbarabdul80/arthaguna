@@ -36,7 +36,7 @@
                             <td>{{ $item->no_rekening }}</td>
                             <td>{{ $item->nama_bank }}</td>
                             <td><img src="{{ asset('storage/ktp_img/' . $item->ktp_image) }}" class="img-fluid"
-                                    alt="..."></td>
+                                    alt="..." style="max-width: 100px"></td>
                             <td>{{ 'Rp ' . number_format($item->total_saldo, 0, ',', '.') }}</td>
                             @if ($item->is_verified == '0')
                                 <td>
@@ -157,7 +157,7 @@
                                                     <div class="row">
                                                         <div class="col mb-3">
                                                             <img src="{{ asset('storage/ktp_img/' . $item->ktp_image) }}"
-                                                                class="img-fluid" alt="...">
+                                                                class="img-fluid" alt="..." style="max-width: 100px">
                                                         </div>
                                                     </div>
                                                 </div>
