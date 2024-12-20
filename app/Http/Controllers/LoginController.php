@@ -39,13 +39,11 @@ class LoginController extends Controller
         // Attempt to log the user in
         if (Auth::attempt($request->only('email', 'password'))) {
             // Authentication passed...
-            // dd(Auth::user());
             return redirect()->intended('/');
         }
+
              // Authentication failed...
             return back()->with('error', 'Login gagal! Periksa email dan password Anda.');
-
-
     }
 
     public function logout()
