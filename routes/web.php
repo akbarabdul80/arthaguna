@@ -3,6 +3,7 @@
 use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserRegistraionController;
+use App\Http\Controllers\WithdrawalController;
 use App\Http\Middleware\Guest;
 use Illuminate\Support\Facades\Route;
 
@@ -23,7 +24,13 @@ Route::controller(LoginController::class)->group(function () {
 Route::prefix('deposit')->controller(DepositsController::class)->group(function () {
     Route::middleware('auth')->group(function(){
         Route::get('/',  'index')->name('deposit');
-
-        Route::post('/update/{id}','update')->name('deposit.update');
     });
 });
+
+Route::prefix('withdrawals')->controller(WithdrawalController::class)->group(function () {
+    Route::middleware('auth')->group(function(){
+        Route::get('/',  'index')->name('withdrawal');
+        Route::post('/update/{id}','update')->name('withdrawal.update');
+    });
+});
+

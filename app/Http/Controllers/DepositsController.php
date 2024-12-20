@@ -15,19 +15,6 @@ class DepositsController extends Controller
             },
         ])->get();
 
-        // dd($deposits);
-
         return view('content.deposit.index', ['deposits' => $deposits]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $deposit = Deposit::findOrFail($id);
-
-        if ($request->status == 'pending' or $request->status == 'approved' or $request->status == 'rejected') {
-            $deposit->status = $request->status;
-        }
-
-        return redirect()->route('deposit');
     }
 }
