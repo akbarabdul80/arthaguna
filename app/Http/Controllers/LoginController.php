@@ -31,7 +31,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         // Validasi input
-        $this->validate($request, [
+        $validated = $request->validate( [
             'email' => 'required|email',
             'password' => 'required'
         ]);
@@ -42,9 +42,10 @@ class LoginController extends Controller
             // dd(Auth::user());
             return redirect()->intended('/');
         }
+             // Authentication failed...
+            return back()->with('error', 'Login gagal! Periksa email dan password Anda.');
 
-        // Authentication failed...
-        return back()->with('error', 'Email atau password salah.');
+
     }
 
     public function logout()
