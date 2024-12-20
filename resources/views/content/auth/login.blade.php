@@ -26,10 +26,11 @@
           <h4 class="mb-1">Welcome to KSP Arthaguna! 👋</h4>
           <p class="mb-6">Please sign-in to your account and start the adventure</p>
 
-          <form id="formAuthentication" class="mb-6" action="{{url('/')}}" method="GET">
+          <form id="formAuthentication" class="mb-6" action="{{ route('login.submit') }}" method="POST">
+            @csrf
             <div class="mb-6">
               <label for="email" class="form-label">Email or Username</label>
-              <input type="text" class="form-control" id="email" name="email-username" placeholder="Enter your email or username" autofocus>
+              <input type="text" class="form-control" id="email" name="email" placeholder="Enter your email or username" autofocus>
             </div>
             <div class="mb-6 form-password-toggle">
               <label class="form-label" for="password">Password</label>

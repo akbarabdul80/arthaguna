@@ -16,12 +16,12 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->enum('role', ['admin','user'])->default('user');
-            $table->string('no_telp');
-            $table->string('nama_bank');
-            $table->string('nama_pemilik');
-            $table->string('no_rekening');
-            $table->string('ktp_image');
-            $table->date('tanggal_lahir');
+            $table->string('no_telp')->nullable();
+            $table->string('nama_bank')->nullable();
+            $table->string('nama_pemilik')->nullable();
+            $table->string('no_rekening')->nullable();
+            $table->string('ktp_image')->nullable();
+            $table->date('tanggal_lahir')->nullable();
             $table->boolean('is_verified')->default(false);
             $table->decimal('total_saldo', 12, 2)->default(0);
             $table->string('password');

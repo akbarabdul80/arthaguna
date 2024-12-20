@@ -2,13 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
+use App\Models\Deposit;
+use App\Models\Withdraw;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 
 class LoginController extends Controller
 {
-    public function index()
+    use ValidatesRequests;
+
+    public function showDashboard(){
+
+        $users = User::where('role', 'user')->get()->count();
+        $total_deposit = Deposit::where('status', 'approved')->sum('amount');
+        $total_withdraw = Withdraw::where('status', 'approved')->sum('amount');
+
+
+        return view('content.dashboard.dashboards-analytics',['users'=>$users, 'total_deposit'=>$total_deposit, 'total_withdraw'=>$total_withdraw]);
+    }
+
+    public function showLoginForm()
     {
         return view('content.auth.login');
+    }
+
+    public function login(Request $request)
+    {
+        // Validasi input
+        $this->validate($request, [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        // Attempt to log the user in
+        if (Auth::attempt($request->only('email', 'password'))) {
+            // Authentication passed...
+            // dd(Auth::user());
+            return redirect()->intended('/');
+        }
+
+        // Authentication failed...
+        return back()->with('error', 'Email atau password salah.');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect('login');
     }
 
     public function create()

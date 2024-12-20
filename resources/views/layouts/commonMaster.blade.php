@@ -22,6 +22,7 @@
 
   <!-- Include Scripts for customizer, helper, analytics, config -->
   @include('layouts/sections/scriptsIncludes')
+  @yield('customStyle')
 </head>
 
 <body>
@@ -30,7 +31,7 @@
   @yield('layoutContent')
   <!--/ Layout Content -->
 
-  
+
 
   <!-- Include Scripts -->
   @include('layouts/sections/scripts')

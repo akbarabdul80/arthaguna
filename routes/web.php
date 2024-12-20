@@ -1,13 +1,29 @@
 <?php
 
+use App\Http\Controllers\DepositsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserRegistraionController;
+use App\Http\Middleware\Guest;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    // return view('welcome');
-    return view('content.dashboard.dashboards-analytics');
+Route::get('/user/registration', [UserRegistraionController::class, 'index'])->name('registration');
+
+Route::controller(LoginController::class)->group(function () {
+    Route::middleware('auth')->group(function(){
+        Route::get('/',  'showDashboard')->name('dashboard');
+        Route::post('/logout', 'logout')->name('logout.submit');
+    });
+
+    Route::middleware(Guest::class)->group(function(){
+        Route::get('/login',  'showLoginForm')->name('login');
+        Route::post('/login', 'login')->name('login.submit');
+    });
 });
 
-Route::get('/user/registration', [UserRegistraionController::class, 'index'])->name('registration');
-Route::get('/login', [LoginController::class, 'index'])->name('login');
+Route::prefix('deposit')->controller(DepositsController::class)->group(function () {
+    Route::middleware('auth')->group(function(){
+        Route::get('/',  'index')->name('deposit');
+
+        Route::post('/update/{id}','update')->name('deposit.update');
+    });
+});
