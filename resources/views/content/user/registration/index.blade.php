@@ -157,7 +157,7 @@
                                                     <div class="row">
                                                         <div class="col mb-3">
                                                             <img src="{{ asset('storage/ktp_img/' . $item->ktp_image) }}"
-                                                                class="img-fluid" alt="..." style="max-width: 100px">
+                                                                class="img-fluid" alt="...">
                                                         </div>
                                                     </div>
                                                 </div>
