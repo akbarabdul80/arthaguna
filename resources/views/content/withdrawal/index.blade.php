@@ -4,6 +4,13 @@
 
 @section('content')
     <!-- Basic Bootstrap Table -->
+    @if (session('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            </button>
+        </div>
+    @endif
     <div class="card">
         <h5 class="card-header">Daftar Riwayat Withdrawal</h5>
         <div class="table-responsive text-nowrap">
@@ -22,6 +29,31 @@
                 <tbody class="table-border-bottom-0">
                     @php $no = 1; @endphp
                     @foreach ($withdrawal as $item)
+                        <!-- Modal-->
+                        <div class="modal fade" id="modalToggle{{ $item->id }}" aria-labelledby="modalToggleLabel"
+                            tabindex="-1" style="display: none;" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalToggleLabel">Warning!</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ route('withdrawal.update', $item->id) }}" method="post">
+                                        @csrf
+                                        <div class="modal-body">
+                                            <p class="text-body-modal"></p>
+
+                                            <input class="input_status" name="status" type="hidden" value="">
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                         <tr>
                             <td>{{ $no++ }}</td>
                             <td>{{ $item->invoice_number }}</td>
@@ -36,25 +68,17 @@
                                             data-bs-toggle="dropdown" aria-expanded="false">Pending</button>
                                         <ul class="dropdown-menu">
                                             <li class="text-center">
-                                                <form action="{{ route('withdrawal.update', $item->id) }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="status" value="approved">
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-success w-75">Approve</button>
-                                                </form>
+                                                <button type="button" class="btn btn-sm btn-success w-75"
+                                                    data-bs-toggle="modal" data-bs-target="#modalToggle{{ $item->id }}"
+                                                    data-action="approve">Approve</button>
                                             </li>
-
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
-
                                             <li class="text-center">
-                                                <form action="{{ route('withdrawal.update', $item->id) }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="status" value="rejected">
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-danger w-75">Reject</button>
-                                                </form>
+                                                <button type="submit" class="btn btn-sm btn-danger w-75"
+                                                    data-bs-toggle="modal" data-bs-target="#modalToggle{{ $item->id }}"
+                                                    data-action="rejected">Reject</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -66,25 +90,17 @@
                                             data-bs-toggle="dropdown" aria-expanded="false">Approved</button>
                                         <ul class="dropdown-menu">
                                             <li class="text-center">
-                                                <form action="{{ route('withdrawal.update', $item->id) }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="status" value="pending">
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-primary w-75">Pending</button>
-                                                </form>
+                                                <button type="submit" class="btn btn-sm btn-primary w-75"
+                                                    data-bs-toggle="modal" data-bs-target="#modalToggle{{ $item->id }}"
+                                                    data-action="pending">Pending</button>
                                             </li>
-
                                             <li>
                                                 <hr class="dropdown-divider">
                                             </li>
-
                                             <li class="text-center">
-                                                <form action="{{ route('withdrawal.update', $item->id) }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="status" value="rejected">
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-danger w-75">Reject</button>
-                                                </form>
+                                                <button type="submit" class="btn btn-sm btn-danger w-75"
+                                                    data-bs-toggle="modal" data-bs-target="#modalToggle{{ $item->id }}"
+                                                    data-action="rejected">Reject</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -96,12 +112,9 @@
                                             data-bs-toggle="dropdown" aria-expanded="false">Rejected</button>
                                         <ul class="dropdown-menu">
                                             <li class="text-center">
-                                                <form action="{{ route('withdrawal.update', $item->id) }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="status" value="pending">
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-primary w-75">Pending</button>
-                                                </form>
+                                                <button type="submit" class="btn btn-sm btn-primary w-75"
+                                                    data-bs-toggle="modal" data-bs-target="#modalToggle{{ $item->id }}"
+                                                    data-action="pending">Pending</button>
                                             </li>
 
                                             <li>
@@ -109,12 +122,9 @@
                                             </li>
 
                                             <li class="text-center">
-                                                <form action="{{ route('withdrawal.update', $item->id) }}" method="post">
-                                                    @csrf
-                                                    <input type="hidden" name="status" value="approved">
-                                                    <button type="submit"
-                                                        class="btn btn-sm btn-success w-75">Approved</button>
-                                                </form>
+                                                <button type="submit" class="btn btn-sm btn-success w-75"
+                                                    data-bs-toggle="modal" data-bs-target="#modalToggle{{ $item->id }}"
+                                                    data-action="approve">Approved</button>
                                             </li>
                                         </ul>
                                     </div>
@@ -129,4 +139,28 @@
     <!--/ Basic Bootstrap Table -->
 
     <hr class="my-12">
+@endsection
+
+@section('customScripts')
+    <script>
+        $(document).ready(function() {
+            // Event listener untuk tombol dengan data-bs-toggle="modal"
+            $('[data-bs-toggle="modal"]').on('click', function() {
+                // Ambil nilai data-action dari tombol yang diklik
+                const action = $(this).data('action');
+
+                // Update isi modal sesuai dengan tombol yang diklik
+                if (action === 'approve') {
+                    $('.text-body-modal').text('Are you sure you want to approve this?');
+                    $('.input_status').val('approved');
+                } else if (action === 'pending') {
+                    $('.text-body-modal').text('Are you sure you want to pending this?');
+                    $('.input_status').val('pending');
+                } else if (action === 'rejected') {
+                    $('.text-body-modal').text('Are you sure you want to reject this?');
+                    $('.input_status').val('rejected');
+                }
+            });
+        });
+    </script>
 @endsection
