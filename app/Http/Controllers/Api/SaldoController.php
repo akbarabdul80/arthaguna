@@ -16,7 +16,7 @@ class SaldoController extends Controller
         $total_saldo = $user->total_saldo;
 
         $withdraw_today = $user->withdraws()->whereDate('created_at', now())
-        ->where('status', 'approved')
+        ->where('status','!=' ,'rejected')
         ->sum('amount');
 
         $deposit_today = $user->deposits()->whereDate('created_at', now())
@@ -94,6 +94,54 @@ class SaldoController extends Controller
             'deposit' => $deposit,
             'withdraw' => $withdraw
         ]);
+    }
+
+    public function getHistorySaldo(Request $request)
+    {
+        $user = $request->user();
+
+        $deposits = $user->deposits()->orderBy('created_at', 'desc')->get();
+        $withdraws = $user->withdraws()->orderBy('created_at', 'desc')->get();
+
+        // Memformat data deposit
+        $formattedDeposits = $deposits->map(function ($deposit) {
+            return [
+                'type' => 'deposit',
+                'amount' => $deposit->amount,
+                'status' => $deposit->status,
+                'detail' => 'Midtrans', // Ganti sesuai kebutuhan, jika ada sumber lain.
+                'transactionID' => $deposit->invoice_number,
+                'created_at' => $deposit->created_at,
+            ];
+        });
+
+        // Memformat data withdraw
+        $formattedWithdraws = $withdraws->map(function ($withdraw) {
+            return [
+                'type' => 'withdraw',
+                'amount' => $withdraw->amount,
+                'status' => $withdraw->status,
+                'detail' => $withdraw->withdraw_nama_bank,
+                'transactionID' => $withdraw->invoice_number,
+                'created_at' => $withdraw->created_at,
+            ];
+        });
+
+        if ($formattedDeposits->isEmpty() && $formattedWithdraws->isEmpty()) {
+            return BaseResponse::success('History saldo user', []);
+        }
+
+        if ($formattedDeposits->isEmpty()) {
+            return BaseResponse::success('History saldo user', $formattedWithdraws);
+        }
+
+        if ($formattedWithdraws->isEmpty()) {
+            return BaseResponse::success('History saldo user', $formattedDeposits);
+        }
+
+        // Menggabungkan dan mengurutkan data berdasarkan created_at
+        $transactions = $formattedDeposits->merge($formattedWithdraws)->sortByDesc('created_at')->values();
+        return BaseResponse::success('History saldo user', $transactions);
     }
 
 }

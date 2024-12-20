@@ -22,6 +22,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::get('saldo', [SaldoController::class, 'getSaldo']);
+    Route::get('history_saldo', [SaldoController::class, 'getHistorySaldo']);
     Route::post('withdraw', [SaldoController::class, 'withdraw']);
 
 });

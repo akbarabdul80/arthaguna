@@ -56,7 +56,7 @@ class PaymentController extends Controller
         $customerDetails = $request->input('customer_details');
         $itemDetails = $request->input('item_details');
         $transactionDetails = $request->input('transaction_details');
-        $userId = $request->input('user_id');
+
 
         // Contoh penggunaan
         $customerIdentifier = $customerDetails['customer_identifier'] ?? null;
@@ -75,7 +75,7 @@ class PaymentController extends Controller
         // Save transaction to database
         $tmp_midtrans = new TmpMidtrans();
         $tmp_midtrans->invoice_number = $invoice_number;
-        $tmp_midtrans->user_id = $userId;
+        $tmp_midtrans->user_id = $customerIdentifier;
         $tmp_midtrans->amount = $grossAmount;
         $tmp_midtrans->midtrans_transaction_id = $orderId;
         $tmp_midtrans->save();
@@ -84,5 +84,56 @@ class PaymentController extends Controller
         return response($response->json(), $response->status());
     }
 
+    public function notification(Request $request)
+    {
+        $payload = $request->getContent();
+        $notification = json_decode($payload);
+
+        $transactionStatus = $notification->transaction_status;
+        $orderId = $notification->order_id;
+        $fraudStatus = $notification->fraud_status;
+
+        $tmp_midtrans = TmpMidtrans::where('midtrans_transaction_id', $orderId)->first();
+
+        if (!$tmp_midtrans) {
+            return response()->json(['message' => 'Transaction not found'], 404);
+        }
+
+        if ($transactionStatus == 'capture') {
+            if ($fraudStatus == 'challenge') {
+                // TODO set transaction status on your database to 'challenge'
+                // and response with 200 OK
+                $tmp_midtrans->status = 'challenge';
+                $tmp_midtrans->save();
+            } else if ($fraudStatus == 'accept') {
+                // TODO set transaction status on your database to 'success'
+                // and response with 200 OK
+                $tmp_midtrans->status = 'success';
+                $tmp_midtrans->save();
+            }
+        } else if ($transactionStatus == 'settlement') {
+            // TODO set transaction status on your database to 'success'
+            // and response with 200 OK
+            $tmp_midtrans->status = 'success';
+            $tmp_midtrans->save();
+        } else if ($transactionStatus == 'deny') {
+            // TODO you can ignore 'deny', because most of the time it allows payment retries
+            // and response with 200 OK
+            $tmp_midtrans->status = 'deny';
+            $tmp_midtrans->save();
+        } else if ($transactionStatus == 'cancel' || $transactionStatus == 'expire') {
+            // TODO set transaction status on your database to 'failure'
+            // and response with 200 OK
+            $tmp_midtrans->status = 'failure';
+            $tmp_midtrans->save();
+        } else if ($transactionStatus == 'pending') {
+            // TODO set transaction status on your database to 'pending' / waiting payment
+            // and response with 200 OK
+            $tmp_midtrans->status = 'pending';
+            $tmp_midtrans->save();
+        }
+
+        return response()->json(['message' => 'Notification received'], 200);
+    }
 
 }
